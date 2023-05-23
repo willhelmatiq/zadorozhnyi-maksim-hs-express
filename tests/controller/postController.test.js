@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../app');
-const { connectDB, dropDB, dropCollections } = require("../../mongoDb/setupDb");
+const { connectDB, dropDB, dropCollections } = require("../../mongoDb/setupDbForTests");
 const Post = require("../../model/post");
 
 beforeAll(async () => {
