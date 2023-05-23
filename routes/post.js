@@ -2,14 +2,15 @@ var express = require('express');
 var router = express.Router();
 const Post = require('../model/post');
 const {ObjectId} = require("mongodb");
+const isLoggedIn = require('../Middleware/auth')
 
 /* GET home page. */
-router.get('/', async function (req, res, next) {
+router.get('/', isLoggedIn, async function (req, res, next) {
     const posts = await Post.find({});
     res.json(posts);
 });
 
-router.get('/:id', async function (req, res, next) {
+router.get('/:id', isLoggedIn, async function (req, res, next) {
     try {
         const id = new ObjectId(req.params.id);
         const post = await Post.findOne({"_id": id});
@@ -21,7 +22,7 @@ router.get('/:id', async function (req, res, next) {
 
 });
 
-router.post('/', async function (req, res, next) {
+router.post('/', isLoggedIn, async function (req, res, next) {
     const {body} = req;
     new Post({
         content: body.content,
@@ -33,7 +34,7 @@ router.post('/', async function (req, res, next) {
     });
 });
 
-router.put('/:id', async function (req, res, next) {
+router.put('/:id', isLoggedIn, async function (req, res, next) {
     const {body} = req;
     try {
         const id = new ObjectId(req.params.id);
@@ -54,7 +55,7 @@ router.put('/:id', async function (req, res, next) {
 
 });
 
-router.delete('/:id', async function (req, res, next) {
+router.delete('/:id', isLoggedIn,  async function (req, res, next) {
     try {
         const id = new ObjectId(req.params.id);
         await Post.deleteOne({"_id": id});
